@@ -65,3 +65,11 @@ Kafka is good for horizontal scalability, this means you can add brokers over ti
 *kafka is only used as a transportation mechanism*
 
 ---
+# Additional Areas
+- Kafka Connect
+- Kafka Streams
+- ksqlDB
+- Confluent Components
+- Kafka Security
+- Kafka Monitoring and Operations
+- Kafka Cluster Setup
