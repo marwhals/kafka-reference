@@ -405,3 +405,17 @@ end
 ```
 ---
 # Advanced Topics for Kafka
+
+## Changing a Topic Configuration
+
+## Segment and Indexes
+
+## Log Cleanup Policies
+
+## Log Cleanup Delete
+
+## Log Compaction Theory
+
+## Unclean Leader Election
+
+## Large Messages In Kafka
