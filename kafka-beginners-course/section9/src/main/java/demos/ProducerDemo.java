@@ -1,4 +1,4 @@
-package demos.kafka;
+package demos;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -19,7 +19,10 @@ public class ProducerDemo {
         Properties properties = new Properties();
 
         // connect to Localhost
-        properties.setProperty("bootstrap.servers", "127.0.0.1:9092"); // TODO change for Linux machine
+        // properties.setProperty("bootstrap.servers", "127.0.0.1:9092"); // TODO change for Linux machine
+
+        properties.setProperty("bootstrap.servers", "192.168.1.105:9092,192.168.1.105:9093,192.168.1.105:9094");
+
 
         // set producer properties
         properties.setProperty("key.serializer", StringSerializer.class.getName());
@@ -30,7 +33,7 @@ public class ProducerDemo {
 
         // create a Producer Record
         ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>("demo_java", "hello world");
+                new ProducerRecord<>("demo_linux", "hello world");
 
         // send data
         producer.send(producerRecord);
