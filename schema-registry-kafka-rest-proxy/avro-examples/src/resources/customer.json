@@ -1,0 +1,8 @@
+{
+  "first_name": "Alice",
+  "last_name": "Smith",
+  "age": 28,
+  "height": 165.5,
+  "weight": 62.0,
+  "automated_email": true
+}
