@@ -218,10 +218,10 @@ Disadvantages:
 
 # Avro useful resources
 
-[Avro Documentation](http://avro.apache.org/docs/current/spec.html)
-[Oracle Avro Getting Started](https://docs.oracle.com/cd/E57769_01/html/GettingStartedGuide/avroschemas.html)
-[Avro Schemas used By Rabo Bank]( https://github.com/Axual/rabo-alerts-blog-post/tree/master/src/main/avro)
-[Avro examples by Gwen Shapira]( https://github.com/gwenshap/kafka-examples)
+- [Avro Documentation](http://avro.apache.org/docs/current/spec.html)
+- [Oracle Avro Getting Started](https://docs.oracle.com/cd/E57769_01/html/GettingStartedGuide/avroschemas.html)
+- [Avro Schemas used By Rabo Bank]( https://github.com/Axual/rabo-alerts-blog-post/tree/master/src/main/avro)
+- [Avro examples by Gwen Shapira]( https://github.com/gwenshap/kafka-examples)
 
 ---
 
@@ -232,4 +232,150 @@ Disadvantages:
 - [ ] Item Here
 - [ ] Item Here
 
+---
 
+# Avro In Java
+
+### Generic Record
+- A GenericRecord is used to create an avro object from a schema, the schema being referenced as:
+  - A file
+  - A string
+- It's not the most recommended way of creating Avro objects because things can fail at runtime, but it is the simplest way.
+
+### Specific Record
+- A SpecificRecord is also an Avro Object, but it is obtained using code generation from an Avro Schema
+- There are different plugins for different build tools (gradle, maven, sbt) etc but here the official code generation tool will be used. Avro with Maven
+
+```mermaid
+graph LR
+  A((Avro Schema))
+  B((Generated Code))
+  A -->|Maven Plugin| B
+  
+```
+
+- Same task as with a generic record but all using a SpecficRecord.
+
+---
+### Overview **without** schema registry
+```mermaid
+graph LR
+
+A(Use Java to Create an Avro Object)
+B(Avro File)
+C(Use Java to Read an Avro Object)
+
+A -->|Write the avro bytes| B
+B -->|Read the avro bytes| C
+
+```
+
+---
+
+### Overview with Schema Registry
+
+```mermaid
+graph LR
+
+  A(Use Java to Create an Avro Object)
+  B(Kafka + Schema Registry)
+  C(Use Java to Read an Avro Object)
+
+  A -->|Write the avro bytes| B
+  B -->|Read the avro bytes| C
+
+```
+---
+
+### Using the Avro Tools
+
+- It is possible to read avro files using the avro tools commands
+- These are very handy when we want to display (print) data to a command line for a quick analysis of the content of an Avro file
+
+---
+
+### Avro Reflection
+- You can use Reflection in order to build Avro Schemas from your class
+- This is a less common scenario but still a valid one. It is useful when you want to add some classes to your Avro Objects
+
+```mermaid
+graph LR
+
+A[Existing Java Class]
+B[Avro Schema and Object]
+
+A -->|Reflection| B
+
+```
+
+---
+## Schema Evolution - Business Problem
+- Avro enables us to evolve our schema over time, to adapt with the changes from the business
+  - Example: Today we're asking for the First Name and Last Name of out customer and that's out v1 Avro Schema but tomorrow we may ask for their phone number. That would be v2 of our schema.
+- We want to be able to make the schema evolve without breaking programs reading out stream of data.
+
+## Schema Evolution - High Level
+- There are 4 kinds of schema evolution
+  1) Backward - A backward compatible change is when a new schema can be used to read old data.
+  2) Forward - A forward compatible change is when an old schema can be used to read new data
+  3) Full - Which is both backward and forward
+  4) Breaking - Which is non of those
+
+## Schema Evolution - Backward compatible
+- Backward - A backward compatible change is when a new schema can be used to read old data
+TODO insert and example here
+- We can read old data with the new schema, thanks to a default value. In case the field doesn't exist, Avro will use the default.
+- We want backwards when we want to successfully perform queries (HIVE-SQL for example) over old and new data using a new schema.
+
+## Schema Evolution - Forward Compatible
+- Forward - a forward compatible change is when an old schema can be used to read new data
+- TODO insert example JSON
+- We can read new data with the old schema, Avro will just ignore new fields. *Deleting fields without defaults is not forward compatible*
+- We want forward compatible when we want to make a data stream evolve without changing our downstream consumers.
+
+## Schema Evolution - Fully Compatible
+- Full - which is both backward and forward
+- TODO insert JSON
+- Only add fields with defaults
+- Only remove fields that have defaults
+- When writing your schema changes, most of the time you want to target full compatibility.
+
+## Schema Evolution - Not compatible
+- Examples of changes that are **not** compatible.
+  - Adding / Removing elements from an Enum
+  - Changing the type of a field (string => int for example)
+  - Renaming a required field (field without default)
+
+### Advice when writing an Avro Schema
+1) Make your primary key required.
+2) Give default values to all the fields that could be removed in the future.
+3) Be very careful when using Enums as they can't evolve over time.
+4) Don't rename fields. You can add aliases instead (other names).
+5) When evolving a schema, ALWAYS give default values.
+6) When evolving a schema, NEVER delete a required field.
+
+## Schema Evolution Diagram
+
+```mermaid
+graph LR
+    
+    A[Write with Old Schema V1]
+    B[Read with New Schema V2]
+    C[Write with New Schema v2]
+    D[Read with Old Schema v1]
+
+A -->|Backward Compatible change| B
+C -->|Forward Compatible Change| D
+
+```
+
+## Summary
+- Three methods to create and Avro Schema
+  - Generic Record
+  - Specific Record (recommended way)
+  - Reflection
+- Types of Schema Evolution
+  - Backward
+  - Forward
+  - Full
+- Rules for writing a good Avro Schema

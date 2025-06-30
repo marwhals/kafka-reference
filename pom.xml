@@ -9,5 +9,6 @@
 
     <modules>
         <module>kafka-beginners-course/section9</module>
+        <module>schema-registry-kafka-rest-proxy/avro-examples</module>
     </modules>
 </project>
