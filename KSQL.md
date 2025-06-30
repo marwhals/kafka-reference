@@ -21,15 +21,15 @@ E <-->|Generate Kafka Streams| G
 ```
 
 ## KSQL form Confluent
-- Writing kafka stream java applications is complex
-- -- May want to write SQL
-- -- Underneath, kafka streams applications are generated
-- -- Get the same benefits (scale, security)
+- Writing Kafka stream java applications is complex
+  - May want to write SQL
+  - Underneath, Kafka streams applications are generated
+  - Get the same benefits (Scale, Security)
 
 ## KSQL use cases
-- Real time analytics dashboard
-- Correlate event behaviour
-- Home automation notifications
+- Real time analytics dashboard.
+- Correlate event behaviour.
+- Home automation notifications.
 - .....
 
 ## How does KSQL work?

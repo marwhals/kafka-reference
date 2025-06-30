@@ -1,13 +1,14 @@
 # Kafka Connect
 
-Helps you simplify and improve getting data in and out of kafka
+Helps you simplify and improve getting data in and out of Kafka.
 
 ## Kafka Connect Use cases
 
-- Always want to connect data from common sources......Databases, MongoDB, SQL...............Blockchain etc
-- Always want to store data in the same sinks...S3, ElasticSearch,SAP, MongoDB etc
-- Tough to achieve Fault Tolerance, Exactly Once, Distribution Order
-----> Use stuff written by other programmers
+- Always want to connect data from common sources such as Databases, MongoDB, SQL, Blockchain etc
+- Always want to store data in the same sinks: S3, ElasticSearch, SAP, MongoDB etc
+- It is tough to achieve Fault Tolerance, Exactly Once Distribution Order????
+
+- Solution here is to use stuff written by other programmers
 
 ## Kafka Connect and Streams Architecture Design
 
@@ -45,7 +46,7 @@ graph LR
 ## Kafka Connect - Concepts
 - Kafka Connect Cluster has multiple loaded Connectors
 - -- Each connector is a re-usable piece of code (java jars)
-- -- There are many open source connectors available....would be wise to use them
+- -- There are many open source connectors available, generally speaking it would be wise to use them
 - Connectors + User Configurations => Tasks
 - -- A task is linked to a connector configuration
 - -- A job configuration may spawn multiple tasks

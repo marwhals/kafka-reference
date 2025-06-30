@@ -20,10 +20,10 @@ Cooperative Rebalance (Incremental Rebalance)
   - RangeAssignor: assign partitions on a per-topic basis (can lead to rebalance)
   - RoundRobin: assign partitions across all topics in round-robin fashion, optimal balancer
   - StickAssignor: balanced like RoundRobin and then minimises partition movements when consumer join/ leave the group in order to minimise movements.
-  - CooperativeStickyAssignor: rebalance strategy is identical to StickAssigor but supports cooperative rebalances and therefore consumers can keep on consuming from the topic
+  - CooperativeStickyAssignor: rebalance strategy is identical to StickAssignor but supports cooperative rebalances and therefore consumers can keep on consuming from the topic
   - The default assignor is [RangeAssignor, CooperativeStickyAssignor] which will use the RangeAssignor by default, but allows upgrading to the CooperativeStickyAssignor with just a single rolling bounce that removes the RangeAssignor from the list.
 - Kafka Connect: Already implemented (enabled by default)
-- Kafka Streams: Turned on by default using StreamsParitionAssignore
+- Kafka Streams: Turned on by default using ```StreamsParitionAssignore```
 
 ## Static Group Membership
 - By default, when a consumer leaves a group its partitions are revoked and re-assigned.
