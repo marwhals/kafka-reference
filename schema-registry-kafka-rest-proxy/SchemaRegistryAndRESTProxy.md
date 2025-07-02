@@ -475,3 +475,132 @@ end
 - [ ] How to efficiently manage schemas
 
 **Always target FULL compatibility**
+
+---
+
+# Confluent REST Proxy
+- Kafka is great for Java based consumers / producers, clients are lacking for other languages.
+  - Avro support for some languages isn't great. JSON / HTTP reqeusts are quite widespread.
+
+This is the motivations for REST proxy. Open source and created by confluent.
+
+```mermaid
+graph TD
+
+A[Producer]
+B[Kafka]
+C[Consumer]
+D[Schema Registry]
+E[Non-Java Producers]
+F[Kafka REST Proxy]
+G[Non-Java Consumers]
+
+A -->|Avro Content| B -->|Avro content| C
+A -->|Send schema| D -->|Get schema| C
+F <---> D
+E -->|HTTP POST| F
+F -->|HTTP GET| G
+
+```
+
+- Its integrated with the schema registry so that consumers and producers can easily read and write to Avro topics
+- There is a performance hit to using HTTP instead of Kafkas native protocol. Through put isi decreased by around 3-4x
+- Its up to the producing application to batch events
+- The Confluent REST proxy is already on a typical docker kafka cluster
+
+---
+
+# Making a request to the REST proxy
+
+Content Type has to be specified in a Header (plus an accept header)
+
+```yaml
+Content-Type: -----
+Accept: ---- 
+
+```
+
+---
+
+# Topic Operations
+
+- Getting a list of topics (GET /topics)
+- Getting a specific topic (GET /topics/topic_name)
+
+- You can't create / configure a topic with the REST proxy
+- It has to be done outside the REST proxy. See shell script.
+
+---
+
+# Producing with the REST proxy
+- Three choices with the REST proxy to produce data:
+  - Binary (raw bytes encoded with base64)
+  - JSON (plain json)
+  - Avro (JSON encoded)
+  - See documentation.....mah GI
+  - You can do batching in the produce request
+
+---
+
+## Producing with the REST proxy
+- Binary data has to be base64 encoded before sending it off to Kafka
+- transfer bytes over the internet safely.....
+- This way any binary array can be sent (image data, string with weird characters)
+- Many libraries do the encoding........see wiki sometime.
+
+---
+
+## Consuming with the REST proxy
+- To consumer with the REST proxy you first need to create a consumer in a specific consumer group.
+- Once you open a consumer, the REST proxy returns a URL to directly hit in order to keep on consuming from the same REST proxy instance.
+- If the REST proxy shuts down, it will try ot gracefully close the consumers
+- You can set `auto.offset.reset` (latest or earliest)
+- You can set `auto.commit.enable` (true or false)
+
+---
+
+### Consuming with the REST proxy binary
+- Steps are (for any data format)
+  1) Create consumer
+  2) Subscribe to a topic (or topic list)
+  3) Get records
+  4) Process records (your app)
+  5) Commit offsets (once in a while)
+- Binary data will be read in base64
+
+---
+
+### Producing with the REST proxy JSON
+- JSON data does not need to be transformed before being sent to the REST proxy, as our POST request take JSON as an input.
+- Any kind of valid JSON can be sent. There are no restrictions
+- Each language has support for JSON so that's a very easy way to send semi structured data
+- *It is the same as before except that the header changes*
+
+---
+
+### Consuming with the REST proxy JSON
+- Same steps
+- 
+- JSON data will get read as is
+- The steps are the exact same as before, only the output and header changes
+
+---
+
+### Producing with the REST Proxy Avro
+- The REST proxy has primary support for Avro as it's directly connected to the schema registry
+- You send the schema in JSON (stringified) and you send the Avro payload encoded in JSON
+- After the first produce call, you can get a schema id to re-use in the next requests to make them smaller
+- The header changes as well
+
+---
+
+### Consuming in Avro with the Kafka REST proxy
+- Steps - same again for any data format
+1) Create consumer
+2) Subscribe to a topic (or topic list)
+3) Get records
+4) Process records (your app)
+5) Commit offsets (once in while)
+
+- Avro data will get read JSON encoded (liek with avro-tools)
+- The steps are the exact same as before, only the output and header changes.
