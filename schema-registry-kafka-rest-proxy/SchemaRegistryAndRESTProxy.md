@@ -390,3 +390,42 @@ C -->|Forward Compatible Change| D
   - Update all consumers to V2, you will still be able to read v1 producer data
   - When all are updated, update the producer to V2
 
+---
+
+# What actually happens with the schema registry
+
+```mermaid
+graph LR
+
+A[Producer]
+B[Kafka]
+C[Consumer]
+D[Schema Registry]
+
+
+A -->|Send Avro Content| B -->|Read avro content| C
+A -->|Send schema| D -->|Get schema| C
+
+```
+
+Avro Bytes = Avro Schema + Avro Content
+- Cannot have one without the other.
+
+Using the kafka avro serializer
+1) Register schema if not registered already - GetID
+  - Schema Registry + schema ID (4 bytes)
+2) Prepend magic byte (version number) to the Avro Content
+3) Prepend the schema ID to the Avro Content
+  - This is what gets sent to Kafka
+
+The deserializer
+- Deserializer does the inverse operation of Serializer
+- How does it work?
+  - It externalises the schema (the schema doesn't live in Kafka)
+  - It reduces the message size by a lot *as the schema is never sent*
+  - If the schema registry is not available, this could break producers and consumers
+
+Tip: Always write fully compatible schema evolutions
+- The schema registry becomes a critical component in your infrastructure
+
+---
