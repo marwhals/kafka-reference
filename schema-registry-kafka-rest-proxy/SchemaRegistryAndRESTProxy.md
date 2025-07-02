@@ -429,3 +429,49 @@ Tip: Always write fully compatible schema evolutions
 - The schema registry becomes a critical component in your infrastructure
 
 ---
+
+# Managing Schemas Efficiently
+- Create a repository that holds your schema and generate your SpecificRecord classes. Publish that schema using CI/CD once deemed valid and compatible with the current schemas
+
+```mermaid
+graph TD
+
+
+A[event avsc]
+B[Schema Registry]
+
+A -->|build and code review| git-repo
+A -->|Verify Compatibility| B
+C -->|Register Schema| B
+git-repo -->|Release| F
+
+subgraph git-repo
+  C[event.avsc]
+  D[event.java]
+  E[event.class]
+
+C --> D --> E
+  
+end
+
+subgraph Jar
+  F[event class]
+end
+
+
+```
+
+- In practice: Reference the published classes for your schema using maven for example
+- Write your normal producer / consumer
+- **Always aim for FULL compatibility**
+
+---
+
+# Recap check list
+
+- [ ] Schema Registry With Kafka
+- [ ] How schema registry works at a high and low level
+- [ ] Schema Evolution
+- [ ] How to efficiently manage schemas
+
+**Always target FULL compatibility**
