@@ -36,3 +36,21 @@ B -->|Read Avro Content| D
 # Avro Console Producer and Consumer
 - The Avro Console Producer allows us to quickly send data to Kafka manually by specifying the schema as an argument.
 - The binaries come with the Confluent Distribution of Kafka (accessible through Docker or accessible through the Confluent Binaries)
+
+---
+
+# Reminder / Important: Schema Evolution
+```mermaid
+graph LR
+
+A[Write with Old Schema V1]
+B[Read with New Schema V2]
+
+A -->|backward compatible change| B
+
+C[Write with new Schema V2]
+D[Read with Old Schema V1]
+
+C -->|Forward Compatible Change| D
+
+```
