@@ -608,3 +608,10 @@ Accept: ----
 ---
 
 [Blog Post covering Kafka Connect, Kafka Streams and Avro](https://github.com/simplesteph/medium-blog-kafka-udemy)
+
+---
+
+# Kafka REST Proxy installation and Scaling - Overview
+- To install REST proxy in production go through documentation at kafka-rest/docs/config.html
+- Can scale the REST proxy by having multiple ones behind a load balancer
+  - Load Balancer examples: AWS, HAProxy, NGINX, Apache......
