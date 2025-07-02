@@ -604,3 +604,7 @@ Accept: ----
 
 - Avro data will get read JSON encoded (liek with avro-tools)
 - The steps are the exact same as before, only the output and header changes.
+
+---
+
+[Blog Post covering Kafka Connect, Kafka Streams and Avro](https://github.com/simplesteph/medium-blog-kafka-udemy)
