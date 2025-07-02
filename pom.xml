@@ -13,6 +13,7 @@
         <module>kafka-beginners-course/section9</module>
         <module>schema-registry-kafka-rest-proxy/avro-examples</module>
         <module>schema-registry-kafka-rest-proxy/kafka-avro-v1</module>
+        <module>schema-registry-kafka-rest-proxy/kafka-avro-v2</module>
     </modules>
 
     <properties>
@@ -20,20 +21,6 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Place shared dependency versions here, optionally -->
-            <!-- Example -->
-            <!--
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>3.7.0</version>
-            </dependency>
-            -->
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <pluginManagement>

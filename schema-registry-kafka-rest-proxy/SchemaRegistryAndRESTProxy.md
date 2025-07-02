@@ -379,3 +379,14 @@ C -->|Forward Compatible Change| D
   - Forward
   - Full
 - Rules for writing a good Avro Schema
+
+---
+# Summary on compatibility changes 💡
+- Two patterns
+- Write a forward compatible change (very common)
+  - Update your producer to V2, the consumers won't break
+  - can take your time updating consumers to V2
+- Write a backward compatible change (less common)
+  - Update all consumers to V2, you will still be able to read v1 producer data
+  - When all are updated, update the producer to V2
+
