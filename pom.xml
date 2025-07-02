@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kafka-beginners-course/section9</module>
+        <module>kafka-beginners/section9</module>
         <module>schema-registry-kafka-rest-proxy/avro-examples</module>
         <module>schema-registry-kafka-rest-proxy/kafka-avro-v1</module>
         <module>schema-registry-kafka-rest-proxy/kafka-avro-v2</module>
