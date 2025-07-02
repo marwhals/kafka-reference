@@ -1,14 +1,19 @@
 services:
-  kafka-cluster:
-    image: landoop/fast-data-dev:cp3.3.0
+  kafka-cluster:  # Name of the service (container)
+    image: landoop/fast-data-dev:cp3.3.0 # Docker image used; Landoop Fast Data Dev bundles Kafka, Schema Registry, REST Proxy, etc.
+
     environment:
-      ADV_HOST: 127.0.0.1
-      RUNTESTS: 0
-      FORWARDLOGS: 0
-      SAMPLEDATA: 0
+      ADV_HOST: 127.0.0.1 # Advertised host for Kafka clients to connect to (must match your machine's IP if accessed externally)
+      RUNTESTS: 0 # Disable Landoop's internal test suite (saves resources)
+      FORWARDLOGS: 0 # Disable forwarding Kafka logs to console (less noise in output)
+      SAMPLEDATA: 0 # Disable sample Kafka data topics (you’ll manage your own topics)
+
     ports:
-      - 2181:2181
-      - 3030:3030
+      - 2181:2181 # Exposes Zookeeper on localhost port 2181 (used internally by Kafka)
+      - 3030:3030 # Kafka Topics UI (Landoop web interface) — accessible at http://localhost:3030
       - 8081-8083:8081-8083
-      - 9581-9585:9581-9585
-      - 9092:9092
+      # 8081: Schema Registry (http://localhost:8081)
+      # 8082: Kafka REST Proxy (http://localhost:8082)
+      # 8083: Kafka Connect (http://localhost:8083)
+      - 9581-9585:9581-9585 # JMX monitoring ports — typically used for internal monitoring/debugging
+      - 9092:9092 # Kafka Broker port (clients use this to produce/consume data)
