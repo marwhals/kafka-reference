@@ -615,3 +615,10 @@ Accept: ----
 - To install REST proxy in production go through documentation at kafka-rest/docs/config.html
 - Can scale the REST proxy by having multiple ones behind a load balancer
   - Load Balancer examples: AWS, HAProxy, NGINX, Apache......
+
+---
+
+TODO Read documentation for
+- Avro
+- Schema Registry
+- REST Proxy
